@@ -1752,6 +1752,15 @@
   }
 }
 
+
+.simulator-banner,
+.simulator-overlay,
+.simulatorBtn,
+#simulatorBtn,
+[data-open-simulator] {
+  cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -1839,9 +1848,9 @@
         </div>
 
         <div class="simulator-experience">
-          <div class="simulator-banner" onclick="goToSimulator()">
+          <div class="simulator-banner" onclick="goToSimulator()" data-open-simulator="true">
             <img src="https://nlnmadhpatoiuzhmhcsu.supabase.co/storage/v1/object/sign/pi/Screenshot%202026-05-04%20at%2011.04.57%20PM.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xMzFmMTE3Yy1iMDhkLTRmMTItOTBjNy0xM2IyOGJlNTVlNzMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwaS9TY3JlZW5zaG90IDIwMjYtMDUtMDQgYXQgMTEuMDQuNTcgUE0ucG5nIiwiaWF0IjoxNzc3OTUzOTIzLCJleHAiOjE3ODA1NDU5MjN9.0I_8cAADVQSlkZPvf9kNS6pJAfbR1Ctrg5TtvOcS_As" alt="Simulador solar" />
-            <div class="simulator-overlay" onclick="window.open('https://subsolar-user-fit.vercel.app/', '_blank')">
+            <div class="simulator-overlay" onclick="window.open('https://subsolar-user-fit.vercel.app/', '_blank')" data-open-simulator="true">
               <div class="simulator-text">
                 <h3>Explora tu simulación personalizada</h3>
                 <p>Haz clic para ver cómo funcionaría la energía solar en tu hogar.</p>
@@ -2521,7 +2530,7 @@ document.addEventListener('click', function(e) {
                 </div>
               </div>
 
-              <button class="btn btn-primary" id="simulatorBtn"><span onclick="window.open('https://subsolar-user-fit.vercel.app/', '_blank')" class="simulatorBtn" style="display:inline-block;width:100%">Conoce más sobre cómo funcionaría la energía solar en tu hogar</span></button>
+              <button class="btn btn-primary simulatorBtn" id="simulatorBtn" type="button" data-open-simulator="true"><span onclick="window.open('https://subsolar-user-fit.vercel.app/', '_blank')" class="simulatorBtn" style="display:inline-block;width:100%">Conoce más sobre cómo funcionaría la energía solar en tu hogar</span></button>
               <p style="color:rgba(255,255,255,.55);">Conoce nuestro simulador personalizable</p>
               <div class="form-actions" style="justify-content:center;">
                 <button class="btn btn-secondary" id="restartBtn">Hacer de nuevo</button>
@@ -2534,7 +2543,6 @@ document.addEventListener('click', function(e) {
         document.getElementById('restartBtn').addEventListener('click', startForm);
         document.getElementById('homeResultBtn')?.addEventListener('click', showHome);
         document.getElementById('resultHomeBtn')?.addEventListener('click', showHome);
-        document.getElementById('simulatorBtn').addEventListener('click', () => alert('Aquí conectaría con el simulador personalizable de GdO Solar.'));
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
@@ -2943,7 +2951,7 @@ const videoHTML = profileVideos[normalizedKey]
                 </div>
               </div>
 
-              <button class="btn btn-primary" id="simulatorBtn"><span onclick="window.open('https://subsolar-user-fit.vercel.app/', '_blank')" class="simulatorBtn" style="display:inline-block;width:100%">Conoce más sobre cómo funcionaría la energía solar en tu hogar</span></button>
+              <button class="btn btn-primary simulatorBtn" id="simulatorBtn" type="button" data-open-simulator="true"><span onclick="window.open('https://subsolar-user-fit.vercel.app/', '_blank')" class="simulatorBtn" style="display:inline-block;width:100%">Conoce más sobre cómo funcionaría la energía solar en tu hogar</span></button>
               <p style="color:rgba(255,255,255,.55);">Conoce nuestro simulador personalizable</p>
               <p id="saveStatus" style="color:rgba(255,255,255,.55);font-size:.92rem;">Guardando tu perfil...</p>
               <div class="form-actions" style="justify-content:center;">
@@ -2956,8 +2964,6 @@ const videoHTML = profileVideos[normalizedKey]
 
         document.getElementById('restartBtn').addEventListener('click', startForm);
         document.getElementById('homeResultBtn').addEventListener('click', showHome);
-        document.getElementById('simulatorBtn').addEventListener('click', () => alert('Aquí conectaría con el simulador personalizable de GdO Solar.'));
-
         if (!state.savedToSupabase) {
           saveSubmissionToSupabase(profileKey, profile, metrics);
         }
@@ -3182,6 +3188,17 @@ const videoHTML = profileVideos[normalizedKey]
           event.stopPropagation();
           window.open('https://subsolar-user-fit.vercel.app/', '_blank');
         });
+      });
+
+
+      // Open simulator links/buttons safely
+      document.addEventListener('click', (event) => {
+        const simulatorTarget = event.target.closest('[data-open-simulator], .simulatorBtn, #simulatorBtn, .simulator-banner, .simulator-overlay');
+        if (!simulatorTarget) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        window.open('https://subsolar-user-fit.vercel.app/', '_blank');
       });
 
       if (dropTarget) {
